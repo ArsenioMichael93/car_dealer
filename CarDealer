@@ -1,0 +1,343 @@
+--tables--
+
+CREATE TABLE "sales_person" (
+  "sales_person_id" SERIAL,
+  "first_name" VARCHAR(100),
+  "last_name" VARCHAR(100),
+  PRIMARY KEY ("sales_person_id")
+);
+CREATE TABLE "customer" (
+  "customer_id" SERIAL,
+  "first_name" VARCHAR(100),
+  "last_name" VARCHAR(100),
+  "phone_number" VARCHAR(100),
+  "address" VARCHAR(150),
+  PRIMARY KEY ("customer_id")
+);
+CREATE TABLE "invoice" (
+  "invoice_id" SERIAL,
+  "sale_price" INTEGER,
+  PRIMARY KEY ("invoice_id")
+);
+CREATE TABLE "sold_cars" (
+  "sold_cars_id" SERIAL,
+  "sales_person_id" INTEGER,
+  "customer_id" INTEGER,
+  "involve_id" INTEGER,
+  "model" VARCHAR(100),
+  "color" VARCHAR(100),
+  "year" VARCHAR(100),
+  "make" VARCHAR(100),
+  "mileage" VARCHAR(100),
+  "commercial" VARCHAR(100),
+  PRIMARY KEY ("sold_cars_id"),
+  CONSTRAINT "FK_sold_cars.sales_person_id"
+    FOREIGN KEY ("sales_person_id")
+      REFERENCES "sales_person"("sales_person_id"),
+  CONSTRAINT "FK_sold_cars.customer_id"
+    FOREIGN KEY ("customer_id")
+      REFERENCES "customer"("customer_id"),
+  CONSTRAINT "FK_sold_cars.involve_id"
+    FOREIGN KEY ("involve_id")
+      REFERENCES "invoice"("invoice_id")
+);
+CREATE TABLE "mechanic" (
+  "mechanic_id" SERIAL,
+  "first_name" VARCHAR(100),
+  "last_name" VARCHAR(100),
+  PRIMARY KEY ("mechanic_id")
+);
+CREATE TABLE "service_ticket" (
+  "service_id" SERIAL,
+  "sold_cars_id" INTEGER,
+  "mechanic_id" INTEGER,
+  "issue" VARCHAR(100),
+  PRIMARY KEY ("service_id"),
+  CONSTRAINT "FK_service_ticket.mechanic_id"
+    FOREIGN KEY ("mechanic_id")
+      REFERENCES "mechanic"("mechanic_id"),
+  CONSTRAINT "FK_service_ticket.sold_cars_id"
+    FOREIGN KEY ("sold_cars_id")
+      REFERENCES "sold_cars"("sold_cars_id")
+);
+-- used_part table needed a typo fixed.. :) --
+
+DROP TABLE used_part
+
+CREATE TABLE "used_part" (
+  "part_id" SERIAL,
+  "service_id" INTEGER,
+  "part" VARCHAR(100),
+  PRIMARY KEY ("part_id"),
+  CONSTRAINT "FK_used_part.service_ticket_id"
+    FOREIGN KEY ("service_id")
+      REFERENCES "service_ticket"("service_id")
+);
+
+--sales peeps--
+
+INSERT INTO "sales_person"(
+	first_name,
+	last_name
+) VALUES (
+	'Jon',
+	'Smith'
+);
+INSERT INTO "sales_person"(
+	first_name,
+	last_name
+) VALUES (
+	'Tim',
+	'Hinkley'
+);
+INSERT INTO "sales_person"(
+	first_name,
+	last_name
+) VALUES (
+	'Sam',
+	'Sheen'
+);
+
+--customer--
+
+INSERT INTO "customer"(
+	first_name,
+	last_name,
+	phone_number,
+	address
+) VALUES (
+	'Johnny',
+	'2x4',
+	'5145662172',
+	'somewhere in the coldesacks'
+);
+INSERT INTO "customer"(
+	first_name,
+	last_name,
+	phone_number,
+	address
+) VALUES (
+	'Acehilm',
+	'aeinors',
+	'9788519339',
+	'322 Old Main st Tewksbury MA'
+);
+INSERT INTO "customer"(
+	first_name,
+	last_name,
+	phone_number,
+	address
+) VALUES (
+	'Varsha',
+	'Bakalov',
+	'7229563255',
+	'elsewhere'
+);
+
+--Invoice--
+
+INSERT INTO "invoice" (
+	sale_price
+) VALUES (
+	'52000'
+);
+INSERT INTO "invoice" (
+	sale_price
+) VALUES (
+	'72000'
+);
+INSERT INTO "invoice" (
+	sale_price
+) VALUES (
+	'50000'
+);
+INSERT INTO "invoice" (
+	sale_price
+) VALUES (
+	'65000'
+);
+
+-- sold cars--
+
+INSERT INTO "sold_cars"(
+	model,
+	color,
+	"year",
+	make,        
+	mileage,
+	commercial
+) VALUES (
+	'Toyota',
+	'Red',
+	'2021',
+	'Tacoma',
+	'0000',
+	'commercial'
+);
+
+INSERT INTO "sold_cars"(
+	model,
+	color,
+	"year",
+	make,
+	mileage,
+	commercial
+) VALUES (
+	'Ford',
+	'Red',
+	'2021',
+	'F150',
+	'0100',
+	'commercial'
+);
+
+INSERT INTO "sold_cars"(
+	model,
+	color,
+	"year",
+	make,
+	mileage,
+	commercial
+) VALUES (
+	'DODGE',
+	'Black',
+	'2015',
+	'3500',
+	'10000',
+	'Personal'
+);
+
+INSERT INTO "sold_cars"(
+	model,
+	color,
+	"year",
+	make,
+	mileage,
+	commercial
+) VALUES (
+	'Hummer',
+	'yellow',
+	'2018',
+	'H2',
+	'36000',
+	'Personal'
+);
+
+INSERT INTO "sold_cars"(
+	model,
+	color,
+	"year",
+	make,
+	mileage,
+	commercial
+) VALUES (
+	'Jeep',
+	'Blue',
+	'2005',
+	'Wrangler',
+	'100000',
+	'Personal'
+);
+
+--mechanic--
+
+INSERT INTO "mechanic" (
+	first_name,
+	last_name
+	
+) VALUES (
+	'Smitty',
+	'Webbermanjenkins'
+);
+INSERT INTO "mechanic" (
+	first_name,
+	last_name
+	
+) VALUES (
+	'Cowpusher',
+	'Daniels'
+);
+INSERT INTO "mechanic" (
+	first_name,
+	last_name
+	
+) VALUES (
+	'Dirtpicker',
+	'Allan'
+);
+INSERT INTO "mechanic" (
+	first_name,
+	last_name
+	
+) VALUES (
+	'BillyBob',
+	'Bill'
+);
+
+--issue--
+
+INSERT INTO "service_ticket" (
+	issue
+) VALUES (
+	'Blinker fluid'
+);
+
+INSERT INTO "service_ticket" (
+	issue
+) VALUES (
+	'Blown tire'
+);
+
+INSERT INTO "service_ticket" (
+	issue
+) VALUES (
+	'The tire makeing flapping noise'
+);
+
+INSERT INTO "service_ticket" (
+	issue
+) VALUES (
+	'potato in muffler'
+);
+
+INSERT INTO "service_ticket" (
+	issue
+) VALUES (
+	'speggetie-Os filled gas tank'
+);
+
+--used part--
+
+INSERT INTO "used_part" (
+	part
+) VALUES (
+	'New brain'
+);
+
+INSERT INTO "used_part" (
+	part
+) VALUES (
+	'new tire'
+);
+
+INSERT INTO "used_part" (
+	part
+) VALUES (
+	'pulled potato out'
+);
+
+INSERT INTO "used_part" (
+	part
+) VALUES (
+	'New gas tank'
+);
+
+--check tables--
+
+select * from sales_person
+select * from customer
+select * from invoice
+select * from sold_cars
+select * from mechanic
+select * from service_ticket
+select * from used_part
